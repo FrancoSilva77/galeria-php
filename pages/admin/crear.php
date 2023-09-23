@@ -10,7 +10,6 @@ if (!$auth) {
 }
 
 $db = conectar_db();
-incluir_template('header');
 
 // Arreglo con errores
 $errores = [];
@@ -18,73 +17,69 @@ $errores = [];
 $descripcion = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  // echo '<pre>';
-  // var_dump($_POST);
-  // echo '</pre>';
-
-  // echo '<pre>';
-  // var_dump($_FILES);
-  // echo '</pre>';
 
   $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
-
+  
   // Asignar files hacia una variable
-
   $imagen = $_FILES['nombre'];
-
+  
   if (!$descripcion) {
     $errores[] = 'La descripción es obligatoria';
   }
-
+  
   if (strlen($descripcion) < 10) {
-    $errores[] = 'La descripción debe tener al menos 15 caracteres';
+    $errores[] = 'La descripción debe tener al menos 10 caracteres';
   }
-
+  
   if (!$imagen['name'] || $imagen['error']) {
     $errores[] = 'La imagen es obligatoria';
   }
-
+  
   // Validar tamaño de la imagen
   $medida = 5000 * 1000;
-
+  
   if ($imagen['size'] > $medida) {
     $errores[] = 'La imagen es muy pesada';
   }
-
-
+  
+  
   // Revisar que el arreglo de errores este vacio
   if (empty($errores)) {
-
+    
     // * Subida de archivos
 
     // Crear carpeta
     $carpetaImagenes = '../../imagenes/';
-
+    
     if (!is_dir($carpetaImagenes)) {
       mkdir($carpetaImagenes);
     }
-
+    
     // Generar nombre único
     $nombreImagen = md5(uniqid(rand(), true)) .  '.jpg';
-    move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-
-
+    $imagenTemporal = $_FILES['nombre']['tmp_name'];
+    $imagenEnServidor = $carpetaImagenes . $nombreImagen;
+    // move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+    $compressedImage = compressImage($imagenTemporal, $imagenEnServidor, 75);
+    
+    
     // Insertar en la base de datos
     $query = " INSERT INTO imagenes ( descripcion, nombre ) VALUES ( '$descripcion', '$nombreImagen' ) ;";
     $resultado = mysqli_query($db, $query);
-
+    
     if ($resultado) {
       header('Location: /pages/admin?resultado=1');
     }
   }
 }
 
+incluir_template('header');
 ?>
 
 <div class="contenedor-sm">
-
+  
   <h1 class="titulo">Subir imagenes</h1>
-
+  
   <div class="alertas">
     <?php foreach ($errores as $error) : ?>
       <div class="alerta error">
