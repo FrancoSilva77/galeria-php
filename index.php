@@ -3,9 +3,6 @@ require './app/funciones.php';
 require './app/database.php';
 
 $auth = is_auth();
-if (!$auth) {
-  header('Location: /');
-}
 
 $db = conectar_db();
 
