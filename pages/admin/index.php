@@ -56,6 +56,7 @@ incluir_template('header');
 
   <div class="enlaces">
     <a href="/pages/admin/crear.php" class="boton boton-verde">Subir Nueva Imagen</a>
+    <a href="/pages/admin/crear-galeria.php" class="boton boton-verde">Crear Nueva Galeria</a>
     <a href="/index.php" class="boton boton-verde">Inicio</a>
   </div>
 
