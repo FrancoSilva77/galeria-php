@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (e.target.value.length < 10) {
       mostrarAlerta(
-        'La descripción debe tener al meno 10 caracteres',
+        'La descripción debe tener al menos 10 caracteres',
         referenciaAlerta
       );
       return;
