@@ -1,6 +1,6 @@
 <?php
-require '../app/database.php';
-require '../app/funciones.php';
+require '../../app/database.php';
+require '../../app/funciones.php';
 
 $db = conectar_db();
 
@@ -99,7 +99,7 @@ incluir_template('header');
 
 <div class="contenedor-sm">
 
-  <h1 class="titulo">Subir imagenes</h1>
+  <h1 class="titulo">Crear Galería</h1>
 
   <div class="alertas">
     <?php foreach ($errores as $error) : ?>
@@ -109,18 +109,18 @@ incluir_template('header');
     <?php endforeach; ?>
   </div>
 
-  <form id="crear-imagen" action="/pages/galeria.php" class="formulario" method="POST" enctype="multipart/form-data">
+  <form id="crear-imagen" action="/pages/admin/crear-galeria.php" class="formulario" method="POST" enctype="multipart/form-data">
     <div class="campo">
-      <label for="descripcion">Descripción</label>
+      <label for="descripcion">Titulo de la Galería</label>
       <input type="text" id="descripcion" name="descripcion" placeholder="Descripción de la imagen" value="<?php echo $descripcion; ?>">
     </div>
 
     <div class="campo">
-      <label for="galeria">Seleccione una imagen</label>
+      <label for="galeria">Seleccione mas de 2 imagenes</label>
       <input type="file" id="galeria" name="galeria[]" multiple accept="image/jpeg, image/png">
     </div>
 
-    <input type="submit" value="Subir Imagen" class="boton boton-verde">
+    <input type="submit" value="Crear Galeria" class="boton boton-verde">
     <a href="/pages/admin/" class="boton boton-verde">Volver</a>
   </form>
 
