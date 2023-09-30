@@ -14,10 +14,11 @@ incluir_template('header');
 
 <div class="contenedor">
 
-  <h1 class="titulo">Galería de Imagenes - Subir Foto </h1>
+  <h1 class="titulo">Galería de Imagenes </h1>
 
   <?php if ($auth) :  ?>
     <a href="cerrar-sesion.php" class="boton boton-verde">Cerrar Sesion</a>
+    <a href="/pages/admin/index.php" class="boton boton-verde">Panel de Administración</a>
   <?php endif; ?>
 
   <div class="galeria">
