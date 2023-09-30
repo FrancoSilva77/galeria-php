@@ -1,25 +1,34 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Seleccionar los elementos de la interfaz
-  const formulario = document.querySelector('#crear-imagen');
+  // Formulario Subir Imagen
+  const formularioSubirImagen = document.querySelector('#crear-imagen');
   const inputNombre = document.querySelector('#nombre');
   const inputDescripcion = document.querySelector('#descripcion');
+
+  // Formulario Subir Galeria
+  const formularioSubirGaleria = document.querySelector('#crear-galeria');
+  const inputTitulo = document.querySelector('#titulo');
+  const inputGaleria = document.querySelector('#galeria');
+
+  // Interfaz General
   const referenciaAlerta = document.querySelector('.alertas');
 
-  // Asignar eventos
-  inputDescripcion.addEventListener('input', validar);
-  inputNombre.addEventListener('input', validar);
+  if (formularioSubirImagen) {
+    // Asignar eventos
+    inputDescripcion.addEventListener('input', validarFoto);
+    inputNombre.addEventListener('input', validarFoto);
 
-  formulario.addEventListener('submit', subirFoto);
-
-  function subirFoto(e) {
-    e.preventDefault();
-
-    setTimeout(() => {
-      this.submit();
-    }, 3000);
+    formularioSubirImagen.addEventListener('submit', subirArchivos);
   }
 
-  function validar(e) {
+  if (formularioSubirGaleria) {
+    inputTitulo.addEventListener('input', validarGaleria);
+    inputGaleria.addEventListener('input', validarGaleria);
+
+    formularioSubirGaleria.addEventListener('submit', subirArchivos);
+  }
+
+  function validarFoto(e) {
     if (e.target.value.trim() === '') {
       mostrarAlerta('El campo es Obligatorio', referenciaAlerta);
       return;
@@ -39,6 +48,37 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     limpiarAlerta(referenciaAlerta);
+  }
+
+  function validarGaleria(e) {
+    if (e.target.value.trim() === '') {
+      mostrarAlerta('El campo es Obligatorio', referenciaAlerta);
+      return;
+    }
+
+    if (e.target.value.length < 10) {
+      mostrarAlerta(
+        'El titulo al menos debe tener 10 caracteres',
+        referenciaAlerta
+      );
+      return;
+    }
+
+    if (inputGaleria.files.length < 2) {
+      mostrarAlerta('Debes seleccionar al menos 2 imagenes', referenciaAlerta);
+      return;
+    }
+
+    limpiarAlerta(referenciaAlerta);
+  }
+
+  // Funciones Generales
+  function subirArchivos(e) {
+    e.preventDefault();
+
+    setTimeout(() => {
+      this.submit();
+    }, 2000);
   }
 
   function mostrarAlerta(mensaje, referencia) {
