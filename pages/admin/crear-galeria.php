@@ -109,7 +109,7 @@ incluir_template('header');
     <?php endforeach; ?>
   </div>
 
-  <form id="crear-imagen" action="/pages/admin/crear-galeria.php" class="formulario" method="POST" enctype="multipart/form-data">
+  <form id="crear-galeria" action="/pages/admin/crear-galeria.php" class="formulario" method="POST" enctype="multipart/form-data">
     <div class="campo">
       <label for="titulo">Titulo de la Galería</label>
       <input type="text" id="titulo" name="titulo" placeholder="Descripción de la imagen" value="<?php echo $titulo; ?>">
