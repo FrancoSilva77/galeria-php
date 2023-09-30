@@ -16,6 +16,13 @@ $resultado = $_GET['resultado'] ?? null;
 //* Escribir el query 
 $query = "SELECT * FROM imagenes";
 
+// Recoger galeria
+$query_galeria = "SELECT * FROM galerias";
+
+
+// Ejecuta tu consulta SQL
+$resultado_galerias = mysqli_query($db, $query_galeria);
+
 // * Realizar la consulta a la db
 $resultado_consulta = mysqli_query($db, $query);
 
@@ -44,7 +51,7 @@ incluir_template('header');
 ?>
 
 <div class="contenedor">
-  <h1 class="titulo">Administrador de Galeria</h1>
+  <h1 class="titulo">Panel de Administración</h1>
 
   <?php if ($resultado == 1) : ?>
     <p class="alerta exito">Datos almacenados correctamente</p>
@@ -60,34 +67,93 @@ incluir_template('header');
     <a href="/index.php" class="boton boton-verde">Inicio</a>
   </div>
 
-  <table class="tabla-imagenes">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Descripción</th>
-        <th>Imagen</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
+  <!-- Comprobacion si hay registros o no -->
+  <?php if ($resultado_consulta->num_rows) {  ?>
 
-    <tbody> <!-- Mostrar los resultados -->
-      <?php while ($imagen =  mysqli_fetch_assoc($resultado_consulta)) : ?>
-        <tr>
-          <td><?php echo $imagen['id']; ?></td>
-          <td><?php echo $imagen['descripcion']; ?></td>
-          <td><img src="/imagenes/<?php echo $imagen['nombre']; ?>" alt="Imagen" class="imagen-tabla"></td>
-          <td>
-            <a href="/pages/admin/actualizar.php?id=<?php echo $imagen['id']; ?>" class="boton boton-azul">Actualizar</a>
-            <form method="POST" class="w-100">
-              <!-- Inputs ocultos -->
-              <input type="hidden" name="id" value="<?php echo $imagen['id']; ?>">
-              <input type="submit" class="boton boton-rojo" value="Eliminar">
-            </form>
-          </td>
-        </tr>
-      <?php endwhile; ?>
-    </tbody>
-  </table>
+    <div class="admin-imagenes">
+      <h2>Imagenes</h2>
+      <table class="tabla-imagenes">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody> <!-- Mostrar los resultados -->
+          <?php while ($imagen =  mysqli_fetch_assoc($resultado_consulta)) : ?>
+            <tr>
+              <td><?php echo $imagen['id']; ?></td>
+              <td><?php echo $imagen['descripcion']; ?></td>
+              <td><img src="/imagenes/<?php echo $imagen['nombre']; ?>" alt="Imagen" class="imagen-tabla"></td>
+              <td>
+                <a href="/pages/admin/actualizar.php?id=<?php echo $imagen['id']; ?>" class="boton boton-azul">Actualizar</a>
+                <form method="POST" class="w-100">
+                  <!-- Inputs ocultos -->
+                  <input type="hidden" name="id" value="<?php echo $imagen['id']; ?>">
+                  <input type="submit" class="boton boton-rojo" value="Eliminar">
+                </form>
+              </td>
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+
+  <?php } else { ?>
+    <h2>No hay ninguna Imagen Aun </h2>
+  <?php } ?>
+
+  <!-- Comprobacion si hay registros o no -->
+  <?php if ($resultado_galerias->num_rows) {  ?>
+
+    <div class="admin-galerias">
+      <h2>Galerias</h2>
+      <table class="tabla-imagenes">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody> <!-- Mostrar los resultados -->
+          <?php while ($galeria = mysqli_fetch_assoc($resultado_galerias)) :
+            // Obtiene la lista de nombres de imágenes
+            $nombres_imagenes = $galeria['imagenes'];
+            // Divide la lista de nombres en un arreglo
+            $arreglo_nombres = explode(",", $nombres_imagenes);
+          ?>
+            <tr>
+              <td><?php echo $galeria['id']; ?></td>
+              <td><?php echo $galeria['titulo']; ?></td>
+              <td>
+                <?php   // Itera sobre los nombres y muestra cada imagen
+                foreach ($arreglo_nombres as $nombre_imagen) : ?>
+                  <img src="/imagenes/<?php echo $nombre_imagen; ?>" alt="Imagen" class="imagen-tabla">
+                <?php endforeach; ?>
+              </td>
+              <td>
+                <a href="/pages/admin/actualizar.php?id=<?php echo $galeria['id']; ?>" class="boton boton-azul">Actualizar</a>
+                <form method="POST" class="w-100">
+                  <!-- Inputs ocultos -->
+                  <input type="hidden" name="id" value="<?php echo $galeria['id']; ?>">
+                  <input type="submit" class="boton boton-rojo" value="Eliminar">
+                </form>
+              </td>
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  <?php } else { ?>
+    <h2>No hay ninguna Galeria aun </h2>
+  <?php } ?>
+
 </div>
 
 <?php
