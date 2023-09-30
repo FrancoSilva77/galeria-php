@@ -9,11 +9,11 @@ $galeria = '';
 
 $errores = [];
 
-$descripcion = '';
+$titulo = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-  $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
+  $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
 
   //* Contamos la cantidad de imagens que queremos publicar
   $numero_imagenes = count($_FILES['galeria']['name']);
@@ -22,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $imagenes = [];
 
 
-  if (!$descripcion) {
-    $errores[] = 'La ddescripcion es obligatoria';
+  if (!$titulo) {
+    $errores[] = 'El titulo es obligatoria';
   }
 
-  if (strlen($descripcion) < 10) {
-    $errores[] = 'La descripcion debe tener al menos 10 caracteres';
+  if (strlen($titulo) < 10) {
+    $errores[] = 'El titulo debe tener al menos 10 caracteres';
   }
 
   if ($numero_imagenes < 2) {
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           // Directorio de las imagenes
 
           // Crear carpeta
-          $carpetaImagenes = '../imagenes/';
+          $carpetaImagenes = '../../imagenes/';
 
           if (!is_dir($carpetaImagenes)) {
             mkdir($carpetaImagenes);
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lista_imagenes = implode(",", $imagenes);
 
     if (empty($errores)) {
-      $query = " INSERT INTO imagenes (descripcion, nombre) VALUES ('$descripcion', '$lista_imagenes');";
+      $query = " INSERT INTO galerias (titulo, imagenes) VALUES ('$titulo', '$lista_imagenes');";
       $resultado = mysqli_query($db, $query);
 
       if ($resultado) {
@@ -111,12 +111,12 @@ incluir_template('header');
 
   <form id="crear-imagen" action="/pages/admin/crear-galeria.php" class="formulario" method="POST" enctype="multipart/form-data">
     <div class="campo">
-      <label for="descripcion">Titulo de la Galería</label>
-      <input type="text" id="descripcion" name="descripcion" placeholder="Descripción de la imagen" value="<?php echo $descripcion; ?>">
+      <label for="titulo">Titulo de la Galería</label>
+      <input type="text" id="titulo" name="titulo" placeholder="Descripción de la imagen" value="<?php echo $titulo; ?>">
     </div>
 
     <div class="campo">
-      <label for="galeria">Seleccione mas de 2 imagenes</label>
+      <label for="galeria">Seleccione mas de 1 imagen</label>
       <input type="file" id="galeria" name="galeria[]" multiple accept="image/jpeg, image/png">
     </div>
 
