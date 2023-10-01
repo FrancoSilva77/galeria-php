@@ -25,13 +25,6 @@ $consulta = "SELECT * FROM imagenes WHERE id = {$id}";
 $resultado = mysqli_query($db, $consulta);
 $imagenTotal = mysqli_fetch_assoc($resultado);
 
-
-//* Escribir el query 
-$query = "SELECT * FROM imagenes";
-
-// * Realizar la consulta a la db
-$resultado_consulta = mysqli_query($db, $query);
-
 incluir_template('header');
 
 // Arreglo con errores
