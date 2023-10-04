@@ -31,18 +31,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $id = filter_var($id, FILTER_VALIDATE_INT);
 
   if ($id) {
-    // Eliminar archivo
-    $query = "SELECT nombre FROM imagenes WHERE id = {$id};";
-    $resultado = mysqli_query($db, $query);
-    $imagen = mysqli_fetch_assoc($resultado);
-    unlink('../../imagenes/' . $imagen['nombre']);
 
-    // Eliminar imagen
-    $query = "DELETE FROM imagenes WHERE id = {$id};";
-    $resultado = mysqli_query($db, $query);
+    $action = $_POST['action'];
 
-    if ($resultado) {
-      header('Location: /pages/admin?resultado=3');
+    if ($action === 'eliminar_imagenes') {
+      // Eliminar archivo
+      $query = "SELECT nombre FROM imagenes WHERE id = {$id};";
+      $resultado = mysqli_query($db, $query);
+      $imagen = mysqli_fetch_assoc($resultado);
+      unlink('../../imagenes/' . $imagen['nombre']);
+
+      // Eliminar imagen
+      $query = "DELETE FROM imagenes WHERE id = {$id};";
+      $resultado = mysqli_query($db, $query);
+
+      if ($resultado) {
+        header('Location: /pages/admin?resultado=3');
+      }
+    } else if ($action === 'eliminar_galeria') {
+      // Obtener la lista de nombres de imágenes
+      $query = "SELECT imagenes FROM galerias WHERE id = {$id};";
+      $resultado = mysqli_query($db, $query);
+      $fila = mysqli_fetch_assoc($resultado);
+      $imagenes = explode(',', $fila['imagenes']); // Separa los nombres por comas
+
+      // Eliminar cada imagen
+      foreach ($imagenes as $nombre_imagen) {
+        $ruta_imagen = '../../imagenes/' . $nombre_imagen;
+        if (file_exists($ruta_imagen)) {
+          unlink($ruta_imagen);
+        }
+      }
+
+      // Eliminar imagen
+      $query = "DELETE FROM galerias WHERE id = {$id};";
+      $resultado = mysqli_query($db, $query);
+
+      if ($resultado) {
+        header('Location: /pages/admin?resultado=3');
+      }
     }
   }
 }
@@ -93,7 +120,7 @@ incluir_template('header');
                 <form method="POST" class="w-100">
                   <!-- Inputs ocultos -->
                   <input type="hidden" name="id" value="<?php echo $imagen['id']; ?>">
-                  <input type="submit" class="boton boton-rojo" value="Eliminar">
+                  <button type="submit" class="boton boton-rojo" name="action" value='eliminar_imagenes'>Eliminar</button>
                 </form>
               </td>
             </tr>
@@ -138,11 +165,11 @@ incluir_template('header');
                 <?php endforeach; ?>
               </td>
               <td>
-                <a href="/pages/admin/actualizar.php?id=<?php echo $galeria['id']; ?>" class="boton boton-azul">Actualizar</a>
+                <a href="/pages/admin/actualizar-galeria.php?id=<?php echo $galeria['id']; ?>" class="boton boton-azul">Actualizar</a>
                 <form method="POST" class="w-100">
                   <!-- Inputs ocultos -->
                   <input type="hidden" name="id" value="<?php echo $galeria['id']; ?>">
-                  <input type="submit" class="boton boton-rojo" value="Eliminar">
+                  <button type="submit" class="boton boton-rojo" name="action" value="eliminar_galeria">Eliminar</button>
                 </form>
               </td>
             </tr>
