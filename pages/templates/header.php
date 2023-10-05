@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/public/css/normalize.css">
   <link rel="stylesheet" href="/public/css/app.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
   <title>Galeria</title>
 </head>
 

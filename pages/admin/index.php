@@ -158,11 +158,16 @@ incluir_template('header');
             <tr>
               <td><?php echo $galeria['id']; ?></td>
               <td><?php echo $galeria['titulo']; ?></td>
-              <td>
-                <?php   // Itera sobre los nombres y muestra cada imagen
-                foreach ($arreglo_nombres as $nombre_imagen) : ?>
-                  <img src="/imagenes/<?php echo $nombre_imagen; ?>" alt="Imagen" class="imagen-tabla">
-                <?php endforeach; ?>
+              <td class="swiper swiper-galeria">
+                <div class="swiper-wrapper">
+                  <?php   // Itera sobre los nombres y muestra cada imagen
+                  foreach ($arreglo_nombres as $nombre_imagen) : ?>
+                    <img src="/imagenes/<?php echo $nombre_imagen; ?>" alt="Imagen" class="imagen-tabla swiper-slide">
+                  <?php endforeach; ?>
+                </div>
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
               </td>
               <td>
                 <a href="/pages/admin/actualizar-galeria.php?id=<?php echo $galeria['id']; ?>" class="boton boton-azul">Actualizar</a>

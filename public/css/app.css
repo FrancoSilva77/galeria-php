@@ -212,9 +212,13 @@ img {
   padding: 2rem;
 }
 
-.imagen-tabla {
-  width: 10rem;
+.tabla-imagenes td {
+  margin-top: 5rem;
 }
+
+/* .imagen-tabla {
+  width: 10rem;
+} */
 
 /* Footer */
 .footer {
@@ -267,4 +271,11 @@ img {
   display: flex;
   flex-grow: 2;
   flex-direction: column;
+}
+
+/* Swiper Galerias */
+.swiper {
+  width: 25rem;
+  height: 100%;
+  object-fit: cover;
 }
