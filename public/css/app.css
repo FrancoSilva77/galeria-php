@@ -216,9 +216,9 @@ img {
   margin-top: 5rem;
 }
 
-/* .imagen-tabla {
-  width: 10rem;
-} */
+  .imagen-tabla {
+    width: 20rem;
+  }
 
 /* Footer */
 .footer {
@@ -273,9 +273,27 @@ img {
   flex-direction: column;
 }
 
+/* Galerias */
+
 /* Swiper Galerias */
 .swiper {
   width: 25rem;
   height: 100%;
   object-fit: cover;
 }
+
+.swiper-galerias {
+  width: 80%;
+  height: auto;
+}
+
+.contenedor-galerias {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5rem;
+}
+/* 
+
+  .contenedor-galerias .galerias{
+    flex: 1;
+  } */
