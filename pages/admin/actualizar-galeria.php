@@ -123,9 +123,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   if (empty($errores)) {
-    $resultado = mysqli_query($db, $query);
+    $resultado_ok = mysqli_query($db, $query);
 
-    if ($resultado) {
+    if ($resultado_ok) {
       header('Location: /pages/admin?resultado=1');
     }
   }
@@ -156,7 +156,17 @@ incluir_template('header');
       <label for="galeria">Seleccione mas de 1 imagen</label>
       <input type="file" id="galeria" name="galeria[]" multiple accept="image/jpeg, image/png">
     </div>
-
+    <?php
+    // Divide la lista de nombres en un arreglo
+    $arreglo_nombres = explode(",", $galeria);
+    ?>
+    <div class="galeria-actualizar">
+      <?php
+      // Itera sobre los nombres y muestra cada imagen
+      foreach ($arreglo_nombres as $nombre_imagen) : ?>
+        <img src="/imagenes/<?php echo $nombre_imagen; ?>" alt="Imagen" class="imagen-sm">
+      <?php endforeach; ?>
+    </div>
     <input type="submit" value="Crear Galeria" class="boton boton-verde">
     <a href="/pages/admin/" class="boton boton-verde">Volver</a>
   </form>

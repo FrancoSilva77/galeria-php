@@ -248,6 +248,15 @@ img {
   }
 }
 
+/* Actulizar - Vista Galerias */
+.galeria-actualizar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -292,8 +301,3 @@ img {
   grid-template-columns: repeat(2, 1fr);
   gap: 5rem;
 }
-/* 
-
-  .contenedor-galerias .galerias{
-    flex: 1;
-  } */
