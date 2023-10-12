@@ -35,15 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   $medida = 3000 * 1000;
+  $imagenes_con_medida_adecuada = true;
 
   if ($numero_imagenes > 0) {
+
     for ($i = 0; $i < $numero_imagenes; $i++) {
-      $archivo_temporal = $_FILES['galeria']['tmp_name'][$i];
-      $nombre_imagen = $_FILES['galeria']['name'][$i];
-      $tipo_imagen = $_FILES['galeria']['type'][$i];
       $amount_imagen = $_FILES['galeria']['size'][$i];
 
-      if ($amount_imagen < $medida) {
+      if ($amount_imagen >= $medida) {
+        $errores[] = 'Cada Imagen debe pesar menos de 5MB';
+        $imagenes_con_medida_adecuada = false;
+      }
+    }
+
+    if ($imagenes_con_medida_adecuada) {
+      for ($i = 0; $i < $numero_imagenes; $i++) {
+        $archivo_temporal = $_FILES['galeria']['tmp_name'][$i];
+        $nombre_imagen = $_FILES['galeria']['name'][$i];
+        $tipo_imagen = $_FILES['galeria']['type'][$i];
+        $amount_imagen = $_FILES['galeria']['size'][$i];
+
         $nombre_imagen_ext = explode(".", $nombre_imagen);
         $extension_imagen = strtolower(end($nombre_imagen_ext));
         $nuevo_nombre_imagen = md5(uniqid(rand(), true)) .  '.' . $extension_imagen;
@@ -76,19 +87,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             array_push($imagenes, $galeria);
           }
         }
-      } else {
-        $errores[] = 'Cada imagen debe pesar menos de 5 MB';
       }
-    }
 
-    $lista_imagenes = implode(",", $imagenes);
+      $lista_imagenes = implode(",", $imagenes);
 
-    if (empty($errores)) {
-      $query = " INSERT INTO galerias (titulo, imagenes) VALUES ('$titulo', '$lista_imagenes');";
-      $resultado = mysqli_query($db, $query);
+      if (empty($errores)) {
+        $query = " INSERT INTO galerias (titulo, imagenes) VALUES ('$titulo', '$lista_imagenes');";
+        $resultado = mysqli_query($db, $query);
 
-      if ($resultado) {
-        header('Location: /pages/admin?resultado=1');
+        if ($resultado) {
+          header('Location: /pages/admin?resultado=1');
+        }
       }
     }
   }
